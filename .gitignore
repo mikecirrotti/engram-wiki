@@ -1,0 +1,9 @@
+# .gitignore
+.DS_Store
+*.tmp
+__pycache__/
+*.pyc
+.venv/
+/exports/office/
+imports/inbox/*
+!imports/inbox/.gitkeep
