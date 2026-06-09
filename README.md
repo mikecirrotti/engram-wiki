@@ -12,9 +12,17 @@ meeting history, writing style, and communication preferences. When these files 
 to an LLM, it doesn't just answer questions — it answers them *as someone who already knows
 your context*.
 
+## What this is
+
+Most LLM interactions are stateless. You explain your context, get a response, and start from
+scratch next time. A work wiki fixes that by storing your professional knowledge — projects,
+people, decisions, meeting history, writing style, communication preferences — as `.md` files
+in a git repository. When these files are available to an AI assistant, the LLM does not just
+answer questions; it answers them *as someone who already knows your context*.
+
 Git tracks changes to code. This repo tracks changes to a person's knowledge-work in a
 machine-readable format. Every commit is a snapshot of what you knew, what you decided, and
-what you were paying attention to at a point in time.
+what you were paying attention to at a given point in time.
 
 > **Why "engram"?** An engram is the physical trace of a memory in the brain — the enduring
 > network of neurons that changes when you experience something, letting you store and recall
@@ -23,6 +31,27 @@ what you were paying attention to at a point in time.
 
 **This repo ships empty on purpose.** The structure, templates, and AI instructions are here;
 the knowledge is yours to fill in over time.
+
+## Who this is for
+
+Anyone doing knowledge work: product managers, data scientists, engineers, technical leads,
+strategists. The directory structure below is a baseline — different roles should evolve it to
+fit. A product manager might have a `stakeholders/` folder instead of `topics/`; a data
+scientist might add `models/`. The skeleton adapts; the principle — machine-readable
+professional memory — stays the same.
+
+## Inspiration and acknowledgements
+
+This pattern draws on ideas from two people whose work shaped it:
+
+- **[Andrej Karpathy](https://x.com/karpathy)** — on LLMs as operating systems and persistent
+  context. See his [LLM Wiki gist](https://gist.github.com/karpathy/442a6bf555914893e9891c11519de94f).
+- **[Nate B Jones](https://x.com/natebjones)** — on structured personal knowledge management
+  with AI copilots. See [Open Brain (OB1)](https://github.com/NateBJones-Projects/OB1).
+
+The engram-wiki is an independent reconstruction of those ideas into a portable, self-contained
+scaffold. It carries nothing proprietary from any employer or third party — you supply your own
+branding and content.
 
 ## Structure
 
