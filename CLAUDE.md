@@ -1,97 +1,47 @@
-# Instructions for AI Agents in This Repository
+# Claude Code instructions for this repository
 
-This is a personal productivity assistant providing durable, persistent memory to an LLM via markdown files in a git repo. Optimize for the user's ability to think clearly over time, not for surface polish.
+The standing instructions are in @AGENTS.md -- imported, not pointed at, so they load by mechanism
+rather than by Claude deciding to open the file. The user's communication preferences load the same
+way: @preferences/communication.md
 
-## Repository purpose
+Those two files are shared with every AI client (Codex, ChatGPT Work, VS Code with Copilot).
+Everything below is Claude-specific and lives here because no other client can use it.
 
-A structured knowledge base tracking a person's knowledge-work in a machine-readable format: daily journal entries, people they work with, projects they own, durable topics, and strategic decisions.
+## Skills
 
-## Directory map
+Skills live in `.github/skills/` (shared with every client) by default. If you migrate them to
+`.claude/skills/<name>/SKILL.md` (the open Agent Skills format), each skill's `description:` field
+carries its own trigger, so no trigger table needs to stay in sync. Either location works; the
+shared location is portable.
 
-- `daily/` — dated journal entries (`YYYY-MM-DD.md`). Append-only.
-- `people/` — one file per collaborator. Living documents.
-- `projects/` — one file per project. Living documents.
-- `topics/` — one file per durable concept. Living documents.
-- `decisions/` — ADR-style logs. Immutable once written.
-- `meetings/` — one file per recurring meeting. Append dated entries.
-- `indexes/` — generated cross-references. Never handwritten.
-- `exports/` — polished artifacts and rendered output.
-- `imports/` — incoming files; extracted content lands in `imports/extracted/`.
-- `templates/` — starting points for new entries.
-- `preferences/` — how the AI should communicate with the user. Read at the start of every interaction.
-- `style/` — house style guide for written artifacts.
-- `style/audiences/` — audience-specific conventions.
-- `.github/skills/` — invokable AI workflows. Read on demand when triggered.
-- `.github/agents/` — invokable agent roles. Read on demand when triggered.
-- `inbox.md` — raw, unsorted capture awaiting triage.
-- `index.md` — top-level map.
+Three behaviors have no skill file and stay here because they are retrieval patterns rather than
+procedures:
 
-## Type vocabulary (frontmatter `type:` field)
+- **"what do I think about X"** -- search `topics/` first, then `projects/`, `decisions/`, recent
+  `daily/`. Check backlinks. Prefer the user's own framings, quote frontmatter dates so recency is
+  visible, and say so if the answer draws on fewer than two sources.
+- **"where did I put X" / "what do I know about Y"** -- filenames and frontmatter first, then
+  contents, then `indexes/`, `meetings/`, `daily/`. Report paths and dates; if nothing is found,
+  say so and offer to create the file.
+- **User signals they are done** -- scan for files modified today across the content folders,
+  report, then ask about empty daily-entry sections. Keep it light; skip it if the conversation was
+  purely tactical.
 
-`observation`, `task`, `idea`, `reference`, `person_note`, `decision`, `daily`, `project`, `topic`, `inbox`, `index`, `preference`, `style_guide`, `meeting`.
+## Style system
 
-## Before responding to any request
+The style files in `style/` compose in layers. Before drafting anything that leaves the repo, the
+draft-artifact skill prescribes the reading order:
 
-Read every file in `preferences/`. These are the user's standing instructions about tone, depth, formatting, and defaults. Apply them throughout. Do not summarize them back; just follow them. If a preference contradicts the user's explicit current request, follow the current request and surface the contradiction in one line at the end.
+1. `style/voice.md` (always)
+2. `style/tells.md` (always, once you have built it)
+3. `style/<artifact-type>.md`
+4. `style/audiences/<audience>.md`
+5. `style/positioning.md` (for anything public-facing)
+6. Corpus samples in `style/corpus/` (for calibration, once you have collected them)
+7. Run `style/slopcheck.py` on the draft (once you have built it)
 
-## Background behaviors (always active)
-
-1. **Contextual retrieval.** Before answering a substantive question, silently check `people/`, `projects/`, `topics/`, `decisions/`, and `meetings/` for relevant context. Use it to inform your response. Do not narrate what you found unless it's surprising, contradictory, or explicitly requested.
-
-2. **Passive capture.** Watch for new insights about a person, decisions made, project shifts, opinions forming, or meeting outcomes. Do not interrupt to file notes. At a natural pause or end of session, offer a concise capture list.
-
-3. **Staleness detection.** If something the user says contradicts what's recorded, surface it immediately in one line and offer to update.
-
-4. **Meeting capture.** When the user shares meeting notes, identify or create the meeting file in `meetings/`, append a dated section with Attendees, Notes, Action items (`- [ ]`), and Promote. Promote durable items to `topics/`, `decisions/`, `people/`, or `projects/`. Always append the dated meeting entry even when content is promoted elsewhere.
-
-5. **End-of-session review.** When the user signals they're done, scan for files modified today across all content folders, report findings, then ask about empty daily-entry sections. Keep it lightweight; skip if the conversation was purely tactical.
-
-6. **Findability.** When the user asks "where did I put X" or "what do I know about Y," search filenames and frontmatter first, then contents, then `indexes/`, then `meetings/`, then `daily/`. Report paths and dates. If nothing is found, say so and offer to create the file.
-
-## When writing a new note
-
-1. Determine the folder. If it's a fragment, append a line to `inbox.md`. For `topics/`, fold into an existing file when overlap exists rather than duplicating.
-2. Use the matching `templates/` file.
-3. Fill frontmatter completely. Today's date for `date:` and `updated:`.
-4. Auto-extract metadata: people → `people:`, projects → `projects:`, durable concepts → `topics:`, dominant content type → `type:`.
-5. Use `[[wikilinks]]` for references to other notes.
-6. Write in the user's voice — first person, direct, no marketing tone, no hedging.
-
-## When asked "what do I think about X"
-
-This is semantic retrieval. Search `topics/` first, then `projects/`, then `decisions/`, then scan recent `daily/`. Look at backlinks. Synthesize, preferring the user's own framings. Quote frontmatter dates so the user can judge recency. If the answer draws from fewer than two sources, say so.
-
-## When the user makes a decision
-
-New file in `decisions/` named `YYYY-MM-DD-short-title.md`. Mark `status: accepted` unless told otherwise. If it replaces an earlier decision, set `supersedes:` in the new file and `superseded_by:` in the old. Decision files are immutable — supersede, never edit.
-
-## Style
-
-- Sentences over bullets when explaining reasoning; bullets when listing concrete items.
-- No corporate hedging. Get to the point.
-- Wikilinks instead of prose references.
-- Bump the `updated:` field when editing a living document.
-
-## What not to do
-
-- Do not edit `decisions/` files after creation.
-- Do not invent content. If there isn't enough source material, say so.
-- Do not reformat the user's existing notes wholesale. Match their style.
-- Do not transmit, fetch, or call external services unless the user explicitly sets that up.
-
-## Skill and agent triggers
-
-Read the matching file in `.github/skills/` or `.github/agents/` on demand when one of these fires:
-
-| Trigger phrase | File | What it does |
-|---|---|---|
-| "good morning" / "start my day" | skills/morning-ritual.md | Create today's daily entry, triage inbox, summarize |
-| "rebuild indexes" | skills/rebuild-indexes.md | Regenerate indexes/ cross-references |
-| drafting any artifact | skills/draft-artifact.md | Style-aware drafting with audience conventions |
-| "weekly digest" / "Friday ritual" | skills/weekly-digest.md | Sanitized digest of durable insights for personal transfer |
-| "style audit" / "weekly style review" | skills/style-audit.md | Review style/preferences files for gaps and contradictions |
-| "web search" / "look this up" | skills/web-search.md | Fetch-based web search, no API key (build on demand) |
-| "read the file I dropped" / "import this file" | skills/import-from-office.md | Extract text and formatting from a dropped .docx/.pptx |
-| user gives feedback on a draft | skills/feedback-to-wiki.md | Turn one-off feedback into durable style/preference rules |
-| invoked after drafting a spec or memo | agents/hostile-reviewer.md | Skeptical verification pass; enumerates problems only |
-| "I'm in a meeting" / "starting a meeting" / "join meeting" | agents/meeting-capture.md | Live note capture; type "wrap" to triage |
+The layers are documented in `style/voice.md` and the draft-artifact skill. `style/tells.md`,
+`style/target.md`, `style/corpus/`, and `style/slopcheck.py` start empty or absent in a new wiki.
+They grow from use: the feedback-to-wiki skill extracts conventions from draft feedback, and the
+style-audit skill catches gaps. Over time, the style system accumulates a calibrated picture of
+your voice that no single-session prompt can replicate.
