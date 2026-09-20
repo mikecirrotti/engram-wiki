@@ -60,6 +60,51 @@ step, the architecture is wrong.
 
 - 
 
+## Prior art
+
+Four public projects have converged on nearly the same shape, which is itself evidence the shape
+is right. If you build a `slopcheck.py`, these are the repos to borrow from:
+
+- **[hardikpandya/stop-slop](https://github.com/hardikpandya/stop-slop)** -- a skill for removing
+  AI tells from prose. Eight rules, a scoring rubric across five dimensions with a threshold, and a
+  pre-delivery checklist. Key idea: a prose gate needs a *score with a threshold* rather than vibes.
+
+- **[jalaalrd/anti-ai-slop-writing](https://github.com/jalaalrd/anti-ai-slop-writing)** -- 50+
+  banned words, 35+ banned phrases, 16 banned sentence openers, ten structural constructions,
+  sorted into categories. Ships a SKILL.md under 500 lines. Key idea: separating the always-read
+  doctrine from the on-demand reference so the drafting path stays cheap.
+
+- **[BioInfo/slopless](https://github.com/BioInfo/slopless)** -- a Claude Code configuration
+  system built on hooks over rules, with the line: "an instrument that cannot fail certifies
+  whatever you point it at." Key ideas: positive-control testing on planted strings, and deny-list
+  scanning that fails loudly rather than silently stripping.
+
+- **[paulscode/no_ai_slop_writing_rules](https://github.com/paulscode/no_ai_slop_writing_rules)**
+  -- a portable CLAUDE.md plus skills that Claude reads before writing and then self-checks output
+  against. Key idea: the read-before / check-after loop.
+
+- **[slopdetector.org](https://slopdetector.org/blog/signs-of-ai-writing)** -- twelve patterns,
+  each with a reproducible threshold. Key idea: *no single number convicts; every pattern has an
+  innocent explanation on its own; convergence is the fingerprint.*
+
+### Research
+
+- *Can You Make It Sound Like You? Post-Editing LLM-Generated Text for Personal Style*
+  ([arXiv:2604.24444](https://arxiv.org/abs/2604.24444)). Editing LLM drafts moves text toward
+  the author's style, but the result still sits measurably closer to LLM output than to their
+  unassisted writing. Implication: cleaning up a bad draft is structurally weaker than generating
+  from the right seed. The corpus matters more than the checker.
+
+- *Catch Me If You Can? Not Yet: LLMs Still Struggle to Imitate the Implicit Writing Styles of
+  Everyday Authors* ([arXiv:2509.14543](https://arxiv.org/abs/2509.14543), EMNLP 2025 Findings).
+  Few-shot consistently beats zero-shot for stylistic alignment. Implication: corpus samples held
+  as exemplars steer voice more stably than verbal style instructions extracted from them.
+
+- *The Last Fingerprint: How Markdown Training Shapes LLM Prose*
+  ([arXiv:2603.27006](https://arxiv.org/abs/2603.27006)). The reflex toward headings, tables and
+  bolded lead-ins is trained in from markdown-heavy training data. Supports the architecture-tells
+  category above.
+
 ## How this file grows
 
 Start empty. After your first few drafts, read them against your own writing samples in

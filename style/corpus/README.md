@@ -34,3 +34,19 @@ yours vs. the ones you borrowed. This file is the evidence base for `tells.md` a
 Record corrections here. If a rule derived from the corpus turns out to have been measured wrong,
 or was based on too few samples, note the correction with a date. The profile is a forensic log,
 not a polished summary.
+
+## Why the corpus matters more than the rules
+
+Two findings from the research support this approach:
+
+- Few-shot exemplars steer LLM stylistic alignment more stably than verbal style instructions
+  extracted from them (*Catch Me If You Can?*, arXiv:2509.14543, EMNLP 2025 Findings). Extracting
+  rules from the corpus is useful, but reading the raw samples *as exemplars* before drafting is
+  the thing that works.
+
+- Post-editing LLM drafts moves them toward the author's style, but the result still sits
+  measurably closer to LLM output than to unassisted writing (*Can You Make It Sound Like You?*,
+  arXiv:2604.24444). Cleaning up a bad draft is weaker than generating from the right seed.
+
+Both point the same direction: collect the samples, read them before drafting, and do not
+substitute extracted rules for the originals.
