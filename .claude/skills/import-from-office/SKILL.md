@@ -1,6 +1,7 @@
 ---
+name: import-from-office
+description: "Extract text and formatting from a dropped .docx or .pptx. Use when: 'read the file I dropped' / 'import this file' / 'I dropped a file in imports' / 'use [file] as context'."
 type: skill
-trigger: "read the file I dropped" / "import this file" / "I dropped a file in imports" / "use [file] as context"
 updated: YYYY-MM-DD
 ---
 

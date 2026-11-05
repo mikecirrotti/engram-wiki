@@ -52,7 +52,7 @@ This pattern draws on ideas from [Andrej Karpathy](https://x.com/karpathy) on LL
 | `templates/` | Starting structures for new entries. |
 | `indexes/` | Generated cross-references. Never handwritten: rebuilt by a skill. |
 | `.github/copilot-instructions.md` | Full behavioral instructions for AI agents working in this repo. |
-| `.github/skills/` | Invokable AI workflows: morning ritual, index rebuild, drafting. |
+| `.claude/skills/` | Invokable AI workflows: morning ritual, index rebuild, drafting. |
 
 ### Capture and transfer
 
@@ -120,8 +120,8 @@ exports/       polished artifacts and rendered output
 imports/inbox/     drop-zone for incoming files
 imports/extracted/ extracted content from imported files
 .github/       AI behavioral instructions and skills
-.github/skills/    invokable AI workflows
-.github/agents/    invokable agent roles (e.g. meeting capture, hostile reviewer)
+.claude/skills/    invokable AI workflows and agent roles, one folder each (SKILL.md)
+.agents/skills     symlink to .claude/skills, for clients that look there
 ```
 
 Also create top-level files: `index.md`, `inbox.md`, and `README.md`.
@@ -154,8 +154,7 @@ A structured knowledge base tracking a person's knowledge-work in a machine-read
 - `preferences/` — how the AI should communicate with the user. Read at the start of every interaction.
 - `style/` — house style guide for written artifacts.
 - `style/audiences/` — audience-specific conventions.
-- `.github/skills/` — invokable AI workflows. Read on demand when triggered.
-- `.github/agents/` — invokable agent roles. Read on demand when triggered.
+- `.claude/skills/` — invokable AI workflows and agent roles, one folder each. Each `SKILL.md` states its own trigger in its `description:` field.
 - `inbox.md` — raw, unsorted capture awaiting triage.
 - `index.md` — top-level map.
 
@@ -171,7 +170,7 @@ Read every file in `preferences/`. These are the user's standing instructions ab
 
 1. **Contextual retrieval.** Before answering a substantive question, silently check `people/`, `projects/`, `topics/`, `decisions/`, and `meetings/` for relevant context. Use it to inform your response. Do not narrate what you found unless it's surprising, contradictory, or explicitly requested.
 
-2. **Passive capture.** Watch for new insights about a person, decisions made, project shifts, opinions forming, or meeting outcomes. Do not interrupt to file notes. At a natural pause or end of session, offer a concise capture list.
+2. **Capture as you go.** Watch for new insights about a person, decisions made, project shifts, opinions forming, or meeting outcomes. When one surfaces, append it to `inbox.md` right then, one line, without mentioning it: `- YYYY-MM-DD -- <the fact, in the user's words where possible>`. Sessions often end before a natural pause, and a list offered at the end is lost with them; a line on disk is not. Only the user's own statements and decisions qualify, never your suggestions they have not adopted. When the session wraps up, say how many lines you captured, in one line.
 
 3. **Staleness detection.** If something the user says contradicts what's recorded, surface it immediately in one line and offer to update.
 
@@ -403,15 +402,15 @@ Create `README.md` explaining the structure and conventions: YAML frontmatter on
 
 ### Step 8: Optional skills
 
-In `.github/skills/`, create small markdown workflow files the assistant reads on demand when triggered:
+In `.claude/skills/`, create one folder per workflow holding a `SKILL.md` the assistant reads on demand when triggered. Each file's frontmatter needs `name:` (the folder name) and `description:` (what it does, then "Use when:" and the trigger phrases); the description is how a client decides to load it:
 
-- `morning-ritual.md` — create today's daily entry, triage `inbox.md`, summarize.
-- `rebuild-indexes.md` — regenerate `indexes/` cross-references from frontmatter.
-- `draft-artifact.md` — style-aware drafting using `style/` + audience profiles.
-- `weekly-digest.md` — produce a sanitized weekly digest of durable insights for transfer to a personal system. Apply strict sanitization: no client names, no internal system names, no specific metrics.
-- `style-audit.md` — periodically review your `style/`, `preferences/`, and instruction files against the week's activity to surface missing conventions, contradictions, and stale rules. Propose changes; never apply without approval.
-- `web-search.md` — if your assistant has a fetch/browse tool, a lightweight search recipe (search-engine results page → fetch the chosen URL). No paid API or third-party plugin required; uses only the built-in fetch capability.
-- `import-from-office.md` — extract text and formatting from a `.docx` or `.pptx` dropped in `imports/inbox/` so the assistant can use it as context.
+- `morning-ritual/SKILL.md` — create today's daily entry, triage `inbox.md`, summarize.
+- `rebuild-indexes/SKILL.md` — regenerate `indexes/` cross-references from frontmatter.
+- `draft-artifact/SKILL.md` — style-aware drafting using `style/` + audience profiles.
+- `weekly-digest/SKILL.md` — produce a sanitized weekly digest of durable insights for transfer to a personal system. Apply strict sanitization: no client names, no internal system names, no specific metrics.
+- `style-audit/SKILL.md` — periodically review your `style/`, `preferences/`, and instruction files against the week's activity to surface missing conventions, contradictions, and stale rules. Propose changes; never apply without approval.
+- `web-search/SKILL.md` — if your assistant has a fetch/browse tool, a lightweight search recipe (search-engine results page → fetch the chosen URL). No paid API or third-party plugin required; uses only the built-in fetch capability.
+- `import-from-office/SKILL.md` — extract text and formatting from a `.docx` or `.pptx` dropped in `imports/inbox/` so the assistant can use it as context.
 
 Keep each skill self-contained. Reference them from a trigger table in `copilot-instructions.md` so the assistant knows when to load each one:
 
@@ -486,7 +485,7 @@ Both engines follow the same `catalog.yaml` + `renderer.py` + spec shape, so bui
 
 ### Step 9.5: Two quality agents — hostile reviewer and feedback-to-wiki
 
-These are small, reusable AI roles that make the drafting loop trustworthy and self-improving. Neither contains anything proprietary — they are pure workflow patterns. Define each as its own agent/skill file (e.g. `.github/agents/hostile-reviewer.md` and `.github/skills/feedback-to-wiki.md`) so the assistant invokes them on cue.
+These are small, reusable AI roles that make the drafting loop trustworthy and self-improving. Neither contains anything proprietary — they are pure workflow patterns. Define each as its own agent/skill file (e.g. `.claude/skills/hostile-reviewer/SKILL.md` and `.claude/skills/feedback-to-wiki/SKILL.md`) so the assistant invokes them on cue.
 
 #### The hostile reviewer (a verification sub-agent)
 
@@ -525,7 +524,7 @@ The morning ritual and background behavior #4 in the copilot instructions handle
 
 **Phase 2 — wrap.** When the user types "wrap," the agent exits capture mode and runs the full triage: identify or create the meeting file in `meetings/`, write a clean dated entry with attendees, notes, and action items, offer to promote durable items to `people/`/`topics/`/`decisions/`/`projects/`, update today's daily entry with a `[[wikilink]]` to the meeting file, and report what was filed and what action items were extracted.
 
-Define this as `.github/agents/meeting-capture.md` (not a skill — it is a stateful agent role). The full file is in the Appendix. Add `.github/agents/` to your directory structure if it is not already there.
+Define this as `.claude/skills/meeting-capture/SKILL.md` (a stateful agent role rather than a one-shot workflow, marked `type: agent`; it lives beside the skills all the same). The full file is in the Appendix.
 
 ### Step 10: First run
 
@@ -607,9 +606,9 @@ Invoke a renderer with the Mac path:
 
 ## Appendix: core skill files (verbatim)
 
-Create each of these as its own file in `.github/skills/`. They're written for the assistant to read on demand when the matching trigger fires. Nothing here is employer-specific — adapt the section names to your own folder layout if you renamed anything.
+Create each of these as `.claude/skills/<name>/SKILL.md`. The copies below are the original, simpler versions with a `trigger:` field; the repo ships newer ones in the open Agent Skills format, where `name:` and `description:` replace `trigger:`. Convert the frontmatter when you copy one. They're written for the assistant to read on demand when the matching trigger fires. Nothing here is employer-specific — adapt the section names to your own folder layout if you renamed anything.
 
-### `.github/skills/morning-ritual.md`
+### `.claude/skills/morning-ritual/SKILL.md`
 
 ````markdown
 ---
@@ -675,7 +674,7 @@ If yesterday's "What I worked on" and "What I learned" sections are empty, infer
 Keep the summary concise — this is a launchpad, not a report.
 ````
 
-### `.github/skills/rebuild-indexes.md`
+### `.claude/skills/rebuild-indexes/SKILL.md`
 
 ````markdown
 ---
@@ -705,7 +704,7 @@ generated: YYYY-MM-DD
 ```
 ````
 
-### `.github/skills/draft-artifact.md`
+### `.claude/skills/draft-artifact/SKILL.md`
 
 ````markdown
 ---
@@ -739,7 +738,7 @@ If you find yourself wanting to apply a convention that isn't yet in the style f
 If the user makes substantive edits, offer to extract conventions from those edits and propose additions to the relevant style file. Phrasing: "Want me to capture the patterns in your edits as additions to `style/<file>.md`?" This is the primary growth mechanism for the style guides. (This is the same loop as the feedback-to-wiki agent in Step 9.5.)
 ````
 
-### `.github/skills/weekly-digest.md`
+### `.claude/skills/weekly-digest/SKILL.md`
 
 ````markdown
 ---
@@ -770,7 +769,7 @@ This is the most sensitive task in this repo. The output may move from a managed
 **Do not relax the sanitization rules** even if the user seems to be asking for more detail. If they want raw content, they can read the source files directly.
 ````
 
-### `.github/skills/style-audit.md`
+### `.claude/skills/style-audit/SKILL.md`
 
 ````markdown
 ---
@@ -809,7 +808,7 @@ Read all of the following. Do not skip any:
 
 **Preferences:** all files in `preferences/`
 
-**Instructions and skills:** `.github/copilot-instructions.md`, all skill files in `.github/skills/`
+**Instructions and skills:** `.github/copilot-instructions.md`, all skill files in `.claude/skills/`
 
 ## Step 3 — Assess each signal
 
@@ -833,7 +832,7 @@ Present a concise summary table, then detailed proposals — each with the file,
 `daily/`, `people/`, `projects/`, `topics/`, `decisions/`, `meetings/`, `indexes/` — content, not process.
 ````
 
-### `.github/skills/import-from-office.md`
+### `.claude/skills/import-from-office/SKILL.md`
 
 ````markdown
 ---
@@ -877,7 +876,7 @@ Common follow-on tasks:
 - **Use as a template reference** → note the style conventions for future drafts.
 ````
 
-### `.github/skills/feedback-to-wiki.md`
+### `.claude/skills/feedback-to-wiki/SKILL.md`
 
 ````markdown
 ---
@@ -918,7 +917,7 @@ Present the exact proposed text and its location for each change. Explain why. *
 Only touches `style/`, `preferences/`, and (if relevant) `projects/`. Never edits `daily/`, `decisions/`, `people/`, `topics/`, `meetings/`, or `indexes/` based on artifact feedback.
 ````
 
-### `.github/agents/hostile-reviewer.md`
+### `.claude/skills/hostile-reviewer/SKILL.md`
 
 ````markdown
 ---
@@ -968,7 +967,7 @@ Close with a short source-coverage summary: which sources were used, which were 
 - Only report. The main agent fixes and resubmits.
 ````
 
-### `.github/agents/meeting-capture.md`
+### `.claude/skills/meeting-capture/SKILL.md`
 
 ````markdown
 ---

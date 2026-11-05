@@ -1,6 +1,7 @@
 ---
+name: style-audit
+description: "Weekly review of style and preference files for gaps, contradictions and stale rules. Use when: 'style audit' / 'review my style files' / 'weekly style review'."
 type: skill
-trigger: "style audit" / "review my style files" / "weekly style review"
 updated: YYYY-MM-DD
 ---
 
@@ -43,7 +44,7 @@ Read all of the following. Do not skip any:
 
 **Preferences:** all files in `preferences/`
 
-**Instructions:** `AGENTS.md`, `CLAUDE.md`, all skill files in `.github/skills/`
+**Instructions:** `AGENTS.md`, `CLAUDE.md`, all skill files in `.claude/skills/`
 
 ## Step 3 -- Assess each signal
 

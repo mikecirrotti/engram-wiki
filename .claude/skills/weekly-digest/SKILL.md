@@ -1,6 +1,7 @@
 ---
+name: weekly-digest
+description: "Sanitized digest of durable insights for personal transfer. Use when: 'weekly digest' / 'Friday ritual'."
 type: skill
-trigger: "weekly digest" / "Friday ritual"
 updated: YYYY-MM-DD
 ---
 

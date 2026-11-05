@@ -9,10 +9,10 @@ Everything below is Claude-specific and lives here because no other client can u
 
 ## Skills
 
-Skills live in `.github/skills/` (shared with every client) by default. If you migrate them to
-`.claude/skills/<name>/SKILL.md` (the open Agent Skills format), each skill's `description:` field
-carries its own trigger, so no trigger table needs to stay in sync. Either location works; the
-shared location is portable.
+`.claude/skills/<name>/SKILL.md`, in the open Agent Skills format. Each one's `description:` field
+carries its own trigger, so Claude Code routes on it natively -- there is no table here to keep in
+sync. `.agents/skills/` is a symlink to the same folder, so clients that look there read the same
+files rather than a copy that drifts.
 
 Three behaviors have no skill file and stay here because they are retrieval patterns rather than
 procedures:

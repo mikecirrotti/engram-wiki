@@ -76,7 +76,9 @@ memory -- stays the same.
 | `preferences/` | Standing instructions to the AI about tone, defaults, work style. |
 | `style/` | House style guide for written artifacts, with layers that grow over time. |
 | `templates/` | Starting structures for new entries. |
-| `indexes/` | Generated cross-references. Never handwritten; rebuilt by a skill. |
+| `indexes/` | Generated cross-references. Never handwritten; rebuilt nightly by `bin/build-indexes.py`. |
+| `now.md` | Generated snapshot of projects in motion, open loops and recent decisions, read at session start. Rebuilt nightly by `bin/build-now.py`; appears after the first build. |
+| `bin/` | Build scripts for `indexes/` and `now.md`. Standard-library Python, no install step. |
 | `exports/` | Polished artifacts and rendered output. |
 | `imports/` | Incoming files; extracted content lands in `imports/extracted/`. |
 | `inbox.md` | Raw capture. Triage into the right home periodically. |
@@ -112,8 +114,8 @@ assistant learns not just what you want to say but how you sound saying it.
 | `.github/copilot-instructions.md` | VS Code + Copilot | Points to AGENTS.md |
 | `preferences/` | Every client (via AGENTS.md) | Conversation style |
 | `style/` | Skills, on trigger | Artifact drafting |
-| `.github/skills/` | Every client, on trigger | Triggered workflows |
-| `.github/agents/` | Every client, on trigger | Sub-agent roles |
+| `.claude/skills/` | Every client, on trigger | Triggered workflows and sub-agent roles, one `SKILL.md` each |
+| `now.md` | Every client (via AGENTS.md) | Generated snapshot of what is in motion |
 
 The test for where a rule lives: name the sessions where it should apply. If the answer is "all
 of them," it goes in `AGENTS.md` or `preferences/`. If the answer is "only when drafting," it

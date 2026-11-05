@@ -1,6 +1,7 @@
 ---
+name: morning-ritual
+description: "Create today's daily entry, triage the inbox, and summarize what is open. Use when: 'good morning' / 'start my day' / 'new day' / creating today's daily entry."
 type: skill
-trigger: "good morning" / "start my day" / "new day" / creating today's daily entry
 updated: YYYY-MM-DD
 ---
 
