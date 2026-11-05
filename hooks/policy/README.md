@@ -7,6 +7,16 @@ looks like. None of that changes what the rules *are*.
 So the rules live here, once, and every caller is a thin adapter around them. Change a rule here and
 every layer gets it. Two copies of a rule drift as surely as fifteen; they just take longer to notice.
 
+Two ideas from other people shaped this folder:
+
+- **One rule, one home.** From Nate B Jones's harness audit, which found one authorship rule copied
+  across fifteen skills -- fifteen apparent owners and no real one. See "The AI Harness Audit: Clean
+  Your Setup Before You Upgrade" (Nate's Newsletter, 2026-07-15,
+  [natesnewsletter.substack.com](https://natesnewsletter.substack.com/p/ai-harness-audit)). The same
+  piece's rule that hard requirements need hard checks is the reason these rules are scripts.
+- **Hooks over rules.** From [BioInfo/slopless](https://github.com/BioInfo/slopless): "a principle
+  with no artifact has no enforcement."
+
 ## The files
 
 | File | What it decides | Callers |

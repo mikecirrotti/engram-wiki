@@ -63,35 +63,52 @@ step, the architecture is wrong.
 
 ## Prior art
 
-Four public projects have converged on nearly the same shape, which is itself evidence the shape
-is right. `style/slopcheck.py` borrows from all four:
+Five public projects have converged on nearly the same shape, which is itself evidence the shape
+is right. The style system here takes something specific from each, named under **Taken** so the
+credit is traceable to a file:
 
 - **[hardikpandya/stop-slop](https://github.com/hardikpandya/stop-slop)** -- a skill for removing
   AI tells from prose. Eight rules, a scoring rubric across five dimensions with a threshold, and a
   pre-delivery checklist. Key idea: a prose gate needs a *score with a threshold* rather than vibes.
+  **Taken:** that idea, which is why `style/slopcheck.py` returns a verdict from counted signals
+  rather than a judgment call.
 
 - **[jalaalrd/anti-ai-slop-writing](https://github.com/jalaalrd/anti-ai-slop-writing)** -- 50+
   banned words, 35+ banned phrases, 16 banned sentence openers, ten structural constructions,
   sorted into categories. Ships a SKILL.md under 500 lines. Key idea: separating the always-read
-  doctrine from the on-demand reference so the drafting path stays cheap.
+  doctrine from the on-demand reference so the drafting path stays cheap. **Taken:** the category
+  structure of the `BANNED` list in `style/slopcheck.py`, and the doctrine/reference split between
+  this file and the checker.
 
 - **[BioInfo/slopless](https://github.com/BioInfo/slopless)** -- a Claude Code configuration
   system built on hooks over rules, with the line: "an instrument that cannot fail certifies
   whatever you point it at." Key ideas: positive-control testing on planted strings, and deny-list
-  scanning that fails loudly rather than silently stripping.
+  scanning that fails loudly rather than silently stripping. **Taken:** planted-string testing,
+  which is the structure of `sandbox/tests/run-slopcheck.sh`; its rhythm rules, which are where the
+  sentence-length numbers in the checker started; and the "hooks over rules" stance behind
+  `hooks/policy/`.
 
 - **[paulscode/no_ai_slop_writing_rules](https://github.com/paulscode/no_ai_slop_writing_rules)**
   -- a portable CLAUDE.md plus skills that Claude reads before writing and then self-checks output
-  against. Key idea: the read-before / check-after loop.
+  against. Key idea: the read-before / check-after loop. **Taken:** that loop, which is the shape
+  of the draft-artifact skill (`.claude/skills/draft-artifact/SKILL.md`).
 
 - **[slopdetector.org](https://slopdetector.org/blog/signs-of-ai-writing)** -- twelve patterns,
   each with a reproducible threshold. Key idea: *no single number convicts; every pattern has an
-  innocent explanation on its own; convergence is the fingerprint.*
+  innocent explanation on its own; convergence is the fingerprint.* **Taken:** the starting
+  thresholds, and that governing principle, which is why `style/slopcheck.py` keys its verdict off
+  how many signals fail at once and why the voice-reviewer looks for clusters.
+
+What is original here, and so carries no one else's endorsement: calibrating every signal against
+the writer's own corpus, splitting voice signals from concision signals, demoting borrowed rules
+that convicted real human writing to report-only, and the dash, cadence and marker signals that came
+out of that calibration.
 
 ### Research
 
 - *Can You Make It Sound Like You? Post-Editing LLM-Generated Text for Personal Style*
-  ([arXiv:2604.24444](https://arxiv.org/abs/2604.24444)). Editing LLM drafts moves text toward
+  ([arXiv:2604.24444](https://arxiv.org/abs/2604.24444);
+  [code](https://github.com/ctbaumler/personal_style_postedit)). Editing LLM drafts moves text toward
   the author's style, but the result still sits measurably closer to LLM output than to their
   unassisted writing. Implication: cleaning up a bad draft is structurally weaker than generating
   from the right seed. The corpus matters more than the checker.
@@ -100,6 +117,11 @@ is right. `style/slopcheck.py` borrows from all four:
   Everyday Authors* ([arXiv:2509.14543](https://arxiv.org/abs/2509.14543), EMNLP 2025 Findings).
   Few-shot consistently beats zero-shot for stylistic alignment. Implication: corpus samples held
   as exemplars steer voice more stably than verbal style instructions extracted from them.
+
+- *Everyone prefers human writers, including AI* ([arXiv:2510.08831](https://arxiv.org/abs/2510.08831)).
+  Blind, LLM judges picked AI-written passages 2.6% of the time; with authorship labels revealed,
+  17.9%. Implication: any LLM-judge screen of a draft must run blind and be checked against human
+  verdicts before it is trusted.
 
 - *The Last Fingerprint: How Markdown Training Shapes LLM Prose*
   ([arXiv:2603.27006](https://arxiv.org/abs/2603.27006)). The reflex toward headings, tables and

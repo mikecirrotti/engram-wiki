@@ -53,6 +53,12 @@ trigger is right for specialist knowledge with a real scope, like an editorial g
 document. It is wrong for a rule that governs everything, because the trigger imposes a scope the
 rule does not have.
 
+That makes this a counterexample to one rule in Nate B Jones's harness audit, *load specialist
+knowledge when the work needs it* ("The AI Harness Audit: Clean Your Setup Before You Upgrade,"
+Nate's Newsletter, 2026-07-15,
+[natesnewsletter.substack.com](https://natesnewsletter.substack.com/p/ai-harness-audit)). The rule
+is right for the editorial guides it was written about. It needs the test above in front of it.
+
 The fix was placement, not a stronger checker:
 
 - The rule moved into `preferences/`, which loads unconditionally, and named the file types that
@@ -67,7 +73,8 @@ The fix was placement, not a stronger checker:
 
 Some rules can be checked mechanically and some cannot. A rule with no judgment in it -- decisions
 are immutable, corpus samples are never edited, every note has a valid `type:` -- belongs in a hook
-or checker, where it is enforced rather than remembered. That is what `hooks/policy/` is for.
+or checker, where it is enforced rather than remembered -- the same audit's rule that hard
+requirements need hard checks. That is what `hooks/policy/` is for.
 
 A rule with legitimate exceptions cannot be fully enforced by a check without false positives, and a
 check that blocks on judgment teaches you `--no-verify`. For those rules, placement is the entire

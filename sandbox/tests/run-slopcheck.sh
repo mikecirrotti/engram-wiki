@@ -4,8 +4,9 @@
 # Run after touching the checker or its thresholds:
 #   bash sandbox/tests/run-slopcheck.sh
 #
-# The discipline here is borrowed from BioInfo/slopless: test on planted strings, because a check
-# that runs silently and passes certifies whatever you point it at. The inverse matters just as
+# The discipline here is borrowed from BioInfo/slopless (github.com/BioInfo/slopless): test on
+# planted strings, because "an instrument that cannot fail certifies whatever you point it at."
+# Credited in full under "Prior art" in style/tells.md. The inverse matters just as
 # much and is the harder half -- a checker that convicts genuine human writing is worse than no
 # checker, so section B is the one that actually decides whether this instrument is worth running.
 #

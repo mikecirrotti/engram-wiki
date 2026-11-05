@@ -23,11 +23,14 @@ over your own samples in style/corpus/ (sandbox/tests/run-slopcheck.sh does this
   - a CONCISION signal that fires on your own writing is working as intended, since
     style/target.md is meant to be tighter than you write.
 
-Prior art this borrows from, cited in full in topics/llm-writing-tells.md:
-  slopdetector.org/blog/signs-of-ai-writing   thresholds, and the convergence rule above
+Prior art this borrows from, with thanks. Credited in full, with what each contributed, under
+"Prior art" in style/tells.md:
+  slopdetector.org/blog/signs-of-ai-writing   starting thresholds, and the convergence rule above
   github.com/hardikpandya/stop-slop           score-with-a-threshold rather than a judgment call
   github.com/jalaalrd/anti-ai-slop-writing    the category structure of BANNED below
-  github.com/BioInfo/slopless                 the rhythm numbers, and planted-string testing
+  github.com/BioInfo/slopless                 the starting rhythm numbers, and planted-string testing
+The corpus calibration, the voice/concision split, and the dash, cadence and marker signals are this
+repo's own and should not be read as anything those projects recommend.
 """
 
 import argparse

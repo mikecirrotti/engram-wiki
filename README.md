@@ -156,12 +156,28 @@ Claude Code does this for you at session start.
 
 ## Inspiration and acknowledgements
 
-This pattern draws on ideas from two people whose work shaped it:
+The overall pattern draws on ideas from two people whose work shaped it:
 
 - **[Andrej Karpathy](https://x.com/karpathy)** -- on LLMs as operating systems and persistent
   context. See his [LLM Wiki gist](https://gist.github.com/karpathy/442a6bf555914893e9891c11519de94f).
 - **[Nate B Jones](https://x.com/natebjones)** -- on structured personal knowledge management
   with AI copilots. See [Open Brain (OB1)](https://github.com/NateBJones-Projects/OB1).
+
+Other people's work shaped specific parts of the scaffold:
+
+- **The style system and `style/slopcheck.py`** borrow from five public anti-slop projects --
+  [hardikpandya/stop-slop](https://github.com/hardikpandya/stop-slop),
+  [jalaalrd/anti-ai-slop-writing](https://github.com/jalaalrd/anti-ai-slop-writing),
+  [BioInfo/slopless](https://github.com/BioInfo/slopless),
+  [paulscode/no_ai_slop_writing_rules](https://github.com/paulscode/no_ai_slop_writing_rules) and
+  [slopdetector.org](https://slopdetector.org/blog/signs-of-ai-writing) -- and rest on four research
+  papers. "Prior art" in [`style/tells.md`](style/tells.md) says what was taken from each.
+- **`hooks/policy/` and `topics/instruction-placement.md`** build on Nate B Jones's
+  [harness audit](https://natesnewsletter.substack.com/p/ai-harness-audit): one rule, one home;
+  load specialist knowledge when the work needs it; hard requirements need hard checks.
+- **`now.md`** borrows from Meta's Muse agent, which injects a curated memory file into every turn.
+- **Skills** use the open [Agent Skills](https://agentskills.io) format, so one `SKILL.md` works
+  across clients.
 
 The engram-wiki is an independent reconstruction of those ideas into a portable, self-contained
 scaffold. It carries nothing proprietary from any employer or third party -- you supply your own

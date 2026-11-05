@@ -7,6 +7,10 @@ updated: YYYY-MM-DD
 
 # Draft Artifact
 
+The read-before / check-after shape of this skill comes from
+[paulscode/no_ai_slop_writing_rules](https://github.com/paulscode/no_ai_slop_writing_rules). Prior
+art for the checks it runs is credited under "Prior art" in `style/tells.md`.
+
 ## Before writing a single line
 
 1. Identify the artifact type -- memo, deck, Slack/email, technical doc, correspondence, etc. If
