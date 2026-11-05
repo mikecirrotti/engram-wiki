@@ -92,4 +92,6 @@ visual design -- the hostile-reviewer owns the first two. Only report.
 
 If the artifact is clean, say so in one line. Do not invent findings to look useful, and do not flag
 a tricolon that is genuinely three things or an em dash that is genuinely the right mark. Every
-pattern here has an innocent explanation on its own; convergence is what you are looking for.
+pattern here has an innocent explanation on its own; convergence is what you are looking for. That
+principle is [slopdetector.org](https://slopdetector.org/blog/signs-of-ai-writing)'s; the rest of the
+prior art is credited under "Prior art" in `style/tells.md`.

@@ -1,0 +1,48 @@
+name: Test suites
+
+# Runs every suite in sandbox/tests/ so "when did the tests last run?" always has an answer. A test
+# nobody runs is a test log with no entries.
+#
+# Read-only by design: it checks out the repo, runs the suites, and reports. A red run is the whole
+# signal. Every suite runs even after one fails, so a single run shows the whole picture.
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  suites:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out
+        uses: actions/checkout@v4
+
+      - name: Give git an identity
+        # The suites build throwaway repos and commit into them; git refuses to commit without one.
+        run: |
+          git config --global user.name  "engram-tests[bot]"
+          git config --global user.email "engram-tests@users.noreply.github.com"
+          git config --global init.defaultBranch main
+
+      - name: Run every suite
+        run: |
+          failed=()
+          for suite in sandbox/tests/run-*.sh; do
+            name=$(basename "$suite" .sh)
+            echo "::group::$name"
+            if bash "$suite"; then
+              echo "| \`$name\` | pass |" >> "$GITHUB_STEP_SUMMARY"
+            else
+              echo "| \`$name\` | **FAIL** |" >> "$GITHUB_STEP_SUMMARY"
+              failed+=("$name")
+            fi
+            echo "::endgroup::"
+          done
+          if [ ${#failed[@]} -gt 0 ]; then
+            echo "::error::Failed: ${failed[*]}"
+            exit 1
+          fi

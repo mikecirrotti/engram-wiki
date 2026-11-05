@@ -14,7 +14,7 @@ the opening of a proposal -- read [[style/positioning]] as well. It carries the 
 and the claim boundaries; this file only carries the voice.
 
 For anything that leaves the repo at all, read [[style/tells]] and run `style/slopcheck.py` on the
-draft (once both exist). For a letter to one named person, read [[style/correspondence]] if it
+draft. For a letter to one named person, read [[style/correspondence]] if it
 exists.
 
 ## Default voice
