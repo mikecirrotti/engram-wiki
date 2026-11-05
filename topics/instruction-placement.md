@@ -8,7 +8,7 @@ topics: [wiki-architecture]
 # Where rules should live
 
 A wiki like this has several places to put instructions: the standing instruction files (AGENTS.md,
-preferences/), the style system (style/), the skills (.github/skills/), and client-specific files
+preferences/), the style system (style/), the skills (.claude/skills/), and client-specific files
 (CLAUDE.md, .github/copilot-instructions.md). The question of which file gets a rule matters more
 than it looks, because a rule filed in the wrong place will silently fail to load in the sessions
 where it is needed.

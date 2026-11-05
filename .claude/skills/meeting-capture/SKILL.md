@@ -1,7 +1,7 @@
 ---
-type: agent
 name: meeting-capture
-trigger: "I'm in a meeting" / "starting a meeting" / attending a live meeting
+description: "Live meeting note capture, then triage into meetings/ with attendees, notes, action items and promotions. Use when: 'I'm in a meeting' / 'starting a meeting' / attending a live meeting."
+type: agent
 updated: YYYY-MM-DD
 ---
 

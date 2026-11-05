@@ -1,7 +1,7 @@
 ---
-type: agent
 name: hostile-reviewer
-trigger: invoked by main agent after drafting a slide spec or memo
+description: "Skeptical verification pass over a spec or memo; enumerates problems only. Use when: invoked by the main agent after drafting a slide spec or memo."
+type: agent
 updated: YYYY-MM-DD
 ---
 
