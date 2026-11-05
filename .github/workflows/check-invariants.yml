@@ -1,0 +1,46 @@
+name: Content invariants
+
+# Runs hooks/policy/wiki-invariants.sh on every push and pull request -- the same script
+# .githooks/pre-commit runs locally, on the same rules.
+#
+# This is the only layer that sees every client. A client writing through the GitHub API (ChatGPT
+# Work through its connector, for example) never touches a local git hook, so a broken rule from
+# that route is caught here or nowhere.
+#
+# Read-only by design: it reports and never repairs. A red run is the whole signal -- GitHub marks
+# the commit with a red X and emails whoever pushed it. Fix the source and push again; for an edited
+# decisions/ file, restore it and supersede it with a new decision instead.
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  invariants:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Check the pushed range
+        env:
+          BEFORE: ${{ github.event.before }}
+          BASE_SHA: ${{ github.event.pull_request.base.sha }}
+        run: |
+          # Pull requests compare against their base; pushes against the previous tip. A new branch
+          # (before is all zeros) or a manual run has no previous tip, so it audits every file
+          # instead -- the diff-only rules (immutability, updated: bumps) are skipped in that mode.
+          if [ -n "$BASE_SHA" ]; then
+            bash hooks/policy/wiki-invariants.sh --range "$BASE_SHA..HEAD"
+          elif [ -n "$BEFORE" ] && [ "$BEFORE" != "0000000000000000000000000000000000000000" ] \
+               && git cat-file -e "$BEFORE" 2>/dev/null; then
+            bash hooks/policy/wiki-invariants.sh --range "$BEFORE..HEAD"
+          else
+            bash hooks/policy/wiki-invariants.sh --all
+          fi

@@ -1,0 +1,27 @@
+#!/bin/sh
+# Pre-commit check for the engram wiki.
+#
+# hooks/policy/wiki-invariants.sh BLOCKS on the binary rules only: decisions/ and style/corpus/
+# immutability, frontmatter in the content folders, and path-style wikilinks. The same script runs
+# server-side in .github/workflows/check-invariants.yml, which is how connector writes that never
+# touch a git hook get checked at all.
+#
+# Enable:  git config core.hooksPath .githooks   (Claude Code does this at session start)
+# Disable: git config --unset core.hooksPath
+
+ROOT=$(git rev-parse --show-toplevel 2>/dev/null) || exit 0
+
+INVARIANTS="$ROOT/hooks/policy/wiki-invariants.sh"
+if [ -x "$INVARIANTS" ]; then
+  if ! "$INVARIANTS" --staged; then
+    echo ""
+    echo "  Commit refused. Only rules with no judgment in them block: decisions/ is"
+    echo "  immutable (supersede, never edit), style/corpus/ holds what you actually wrote,"
+    echo "  content notes need a valid type:, and wikilinks are [[folder/slug]]."
+    echo "  Advisory lines are informational only."
+    echo ""
+    exit 1
+  fi
+fi
+
+exit 0

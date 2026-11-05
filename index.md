@@ -23,7 +23,7 @@ Top-level map of this wiki. Generated cross-references live in [[indexes/]].
 - [[style/corpus/]] -- unedited writing samples. Immutable calibration data.
 - [[templates/]] -- starting structures for new entries.
 - [[indexes/]] -- generated cross-references. Never handwritten.
-- [[now]] -- generated snapshot of what is in motion, rebuilt nightly. Never handwritten.
+- `now.md` -- generated snapshot of what is in motion, rebuilt nightly. Never handwritten.
 
 ## Capture and transfer
 

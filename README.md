@@ -116,10 +116,16 @@ assistant learns not just what you want to say but how you sound saying it.
 | `style/` | Skills, on trigger | Artifact drafting |
 | `.claude/skills/` | Every client, on trigger | Triggered workflows and sub-agent roles, one `SKILL.md` each |
 | `now.md` | Every client (via AGENTS.md) | Generated snapshot of what is in motion |
+| `hooks/policy/` | Git and GitHub, not the model | Rules enforced at commit and on push |
 
 The test for where a rule lives: name the sessions where it should apply. If the answer is "all
 of them," it goes in `AGENTS.md` or `preferences/`. If the answer is "only when drafting," it
-goes in a style file or a skill. See `topics/instruction-placement.md` for the full reasoning.
+goes in a style file or a skill. If it has no judgment in it and must never be broken, it goes in
+`hooks/policy/`, where it is enforced rather than remembered. See `topics/instruction-placement.md`
+for the full reasoning.
+
+To arm the commit-time checks in a fresh clone, run `git config core.hooksPath .githooks` once.
+Claude Code does this for you at session start.
 
 ## Conventions
 

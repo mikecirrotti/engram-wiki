@@ -11,7 +11,8 @@ file says what to avoid, and it is about *pattern* rather than vocabulary. Banne
 corporate filler, which was the 2015 failure mode. Nothing there catches the 2026 one.
 
 Read this before drafting anything that leaves the repo. Run `style/slopcheck.py` on the draft
-before presenting it (once you have built the checker).
+before presenting it. Its thresholds start out tuned to someone else's writing; recalibrate them
+against your own samples in `style/corpus/` before trusting a verdict.
 
 ## The rule that governs the rest
 
@@ -63,7 +64,7 @@ step, the architecture is wrong.
 ## Prior art
 
 Four public projects have converged on nearly the same shape, which is itself evidence the shape
-is right. If you build a `slopcheck.py`, these are the repos to borrow from:
+is right. `style/slopcheck.py` borrows from all four:
 
 - **[hardikpandya/stop-slop](https://github.com/hardikpandya/stop-slop)** -- a skill for removing
   AI tells from prose. Eight rules, a scoring rubric across five dimensions with a threshold, and a

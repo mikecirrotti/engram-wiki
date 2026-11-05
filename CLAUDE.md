@@ -38,10 +38,11 @@ draft-artifact skill prescribes the reading order:
 4. `style/audiences/<audience>.md`
 5. `style/positioning.md` (for anything public-facing)
 6. Corpus samples in `style/corpus/` (for calibration, once you have collected them)
-7. Run `style/slopcheck.py` on the draft (once you have built it)
+7. Run `style/slopcheck.py` on the draft
 
 The layers are documented in `style/voice.md` and the draft-artifact skill. `style/tells.md`,
-`style/target.md`, `style/corpus/`, and `style/slopcheck.py` start empty or absent in a new wiki.
-They grow from use: the feedback-to-wiki skill extracts conventions from draft feedback, and the
+`style/target.md` and `style/corpus/` start empty in a new wiki, and `style/slopcheck.py` ships with
+thresholds tuned to another writer -- recalibrate it against your own corpus.
+The first three grow from use: the feedback-to-wiki skill extracts conventions from draft feedback, and the
 style-audit skill catches gaps. Over time, the style system accumulates a calibrated picture of
 your voice that no single-session prompt can replicate.

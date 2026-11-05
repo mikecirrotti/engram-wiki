@@ -20,7 +20,7 @@ would have written by yourself, and it is deliberately not what the rules alone 
 
 ## The two classes of signal
 
-`style/slopcheck.py` (once you build it) should score these separately. The difference is the
+`style/slopcheck.py` scores these separately. The difference is the
 whole design:
 
 | | Calibrated to | If it flags a corpus sample |
